@@ -17,7 +17,7 @@ spec:
         - name: ghcr-secret
       containers:
         - name: backend
-          image: ghcr.io/senior-album/ablum-backend:355b73fc
+          image: ghcr.io/senior-album/album-backend:35b73fc
           ports:
             - containerPort: 8000
           envFrom:
