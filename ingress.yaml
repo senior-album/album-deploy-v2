@@ -3,6 +3,8 @@ kind: Ingress
 metadata:
   name: album
   namespace: album
+  annotations:
+    traefik.ingress.kubernetes.io/router/middlewares: album-strip-api@kubernetescrd
 spec:
   rules:
     - http:
