@@ -12,3 +12,5 @@ data:
   MINIO_BUCKET: "album"
   MINIO_USE_SSL: "false"
   MINIO_EXTERNAL_ENDPOINT: "storage.thekim123.info"
+  OPENSEARCH_HOST: "opensearch"
+  OPENSEARCH_PORT: "9200"

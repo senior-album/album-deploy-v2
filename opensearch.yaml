@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: opensearch
+  namespace: album
+  labels:
+    app: opensearch
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: opensearch
+  template:
+    metadata:
+      labels:
+        app: opensearch
+    spec:
+      containers:
+        - name: opensearch
+          image: opensearchproject/opensearch:2.11.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 9200
+              protocol: TCP
+          env:
+            - name: discovery.type
+              value: single-node
+            - name: DISABLE_SECURITY_PLUGIN
+              value: "true"
+            - name: OPENSEARCH_JAVA_OPTS
+              value: "-Xms256m -Xmx256m"
+          volumeMounts:
+            - mountPath: /usr/share/opensearch/data
+              name: opensearch-data
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+            limits:
+              memory: "768Mi"
+              cpu: "500m"
+      initContainers:
+        - name: fix-permissions
+          image: busybox
+          command: [ "sh", "-c", "chown -R 1000:1000 /usr/share/opensearch/data" ]
+          volumeMounts:
+            - mountPath: /usr/share/opensearch/data
+              name: opensearch-data
+      restartPolicy: Always
+      volumes:
+        - name: opensearch-data
+          persistentVolumeClaim:
+            claimName: opensearch-pvc
+
